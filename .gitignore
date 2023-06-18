@@ -1,0 +1,19 @@
+# Ignore .idea folder
+.idea/
+
+# Ignore target folder
+target/
+
+# Ignore compiled Java classes
+*.class
+
+# Ignore war/jar files
+*.war
+*.jar
+
+# Ignore log and text files
+*.log
+*.txt
+
+# Ignore IntelliJ IDEA module configuration files
+*.iml
