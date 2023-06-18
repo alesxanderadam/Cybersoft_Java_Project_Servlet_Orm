@@ -1,13 +1,9 @@
 package repository;
 
 import config.MysqlConfig;
-import model.Roles;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.List;
 
 public class RoleRepository {
     public boolean insertRole(String name, String description) {

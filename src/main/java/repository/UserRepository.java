@@ -1,7 +1,7 @@
 package repository;
 
 import config.MysqlConfig;
-import model.Roles;
+import model.RoleModel;
 import model.UserModel;
 
 import java.sql.Connection;
@@ -47,7 +47,7 @@ public class UserRepository extends UtilsRepository {
 
     public List<UserModel> users = findAllModels("users", new String[]{"id", "email", "fullname", "role_id"}, UserModel.class);
 
-    public List<Roles> roles = findAllModels("roles", new String[]{"id", "name", "description"}, Roles.class);
+    public List<RoleModel> roles = findAllModels("roles", new String[]{"id", "name", "description"}, RoleModel.class);
 
     public UserModel getUserById(int user_id) {
         String[] columnNames = {"id", "email","password","fullname","avatar","role_id"};
@@ -92,7 +92,6 @@ public class UserRepository extends UtilsRepository {
 
     public boolean deleteByUserId(int user_id){
         String sql = "DELETE FROM users u WHERE u.id = ?";
-        boolean isSuccess =  deleteById(user_id, "users",sql);
-        return isSuccess;
+        return deleteById(user_id, "users",sql);
     }
 }

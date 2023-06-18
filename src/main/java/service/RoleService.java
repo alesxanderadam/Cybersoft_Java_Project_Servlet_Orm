@@ -1,7 +1,6 @@
 package service;
 
-import model.Roles;
-import model.UserModel;
+import model.RoleModel;
 import repository.RoleRepository;
 import repository.UserRepository;
 
@@ -12,9 +11,9 @@ import java.util.List;
 public class RoleService {
     private RoleRepository roleRepository = new RoleRepository();
     private UserRepository userRepository = new UserRepository();
-    public List<Roles> showListRole(HttpServletRequest req, HttpServletResponse resp){
+    public List<RoleModel> showListRole(HttpServletRequest req, HttpServletResponse resp){
         try{
-            List<Roles> rolesList =  userRepository.roles;
+            List<RoleModel> rolesList =  userRepository.roles;
             req.setAttribute("roles", rolesList);
             req.getRequestDispatcher("role-table.jsp").forward(req,resp);
         }catch (Exception e){

@@ -8,6 +8,7 @@ public class UserModel {
     private String avatar;
     private int role_id;
 
+
     public UserModel(int id, String email, String password, String fullname, String avatar, int role_id) {
         this.id = id;
         this.email = email;
