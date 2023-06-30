@@ -18,10 +18,9 @@ public class UserService {
     private final StatusRepository statusRepository = new StatusRepository();
 
     public void showAllUser(HttpServletRequest req, HttpServletResponse resp){
-        List<UserModel> userModelList =  userRepository.users;
+        List<UserModel> userModelList =  userRepository.getAllUserCustom();
         try{
             req.setAttribute("userModelList", userModelList);
-            req.getRequestDispatcher("/user-table.jsp").forward(req,resp);
         }catch (Exception e){
             System.out.println("Error showAllUser " + e);
         }
@@ -36,15 +35,18 @@ public class UserService {
         }
     }
 
-    public void showDetailUser(int user_id , HttpServletResponse resp, HttpServletRequest req){
+    public boolean showDetailUser(int user_id , HttpServletResponse resp, HttpServletRequest req){
         UserModel user = userRepository.getUserById(user_id);
+        boolean isHaveUser = false;
         try{
             if(user != null){
+                isHaveUser = true;
                 req.setAttribute("userDetailModel", user);
             }
         }catch (Exception e){
             System.out.println("Error showAllUser " + e);
         }
+        return isHaveUser;
     }
 
     public void showDetailTaskByUserId(int user_id, HttpServletRequest req, HttpServletResponse resp){
@@ -53,7 +55,6 @@ public class UserService {
             if(taskModel.size() > 0){
                 req.setAttribute("userTaskDetail", taskModel);
             }
-            req.getRequestDispatcher("/user-details.jsp").forward(req,resp);
         }catch (Exception error){
             System.out.println("Error show DetailTaskByUserId " + error);
         }
@@ -76,7 +77,7 @@ public class UserService {
     }
 
     public void userUpdate(Object user_id, UserModel userModel){
-        boolean isSuccess = userRepository.updateUser(user_id,userModel);
+        userRepository.updateUser(user_id,userModel);
         userRepository.users = userRepository.findAllModels("users", new String[]{"id", "email", "fullname", "role_id"}, UserModel.class);
     }
 

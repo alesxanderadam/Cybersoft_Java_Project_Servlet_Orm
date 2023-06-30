@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<decorators defaultdir="/decorators">
+    <!--    Khai bao ko su dung giao dien -->
+    <excludes>
+        <pattern>/views/not-found/404-NotFound.jsp</pattern>
+    </excludes>
+
+<!--    <excludes>-->
+<!--        <pattern>/views/not-found/404-NotFound.jsp</pattern>-->
+<!--    </excludes>-->
+
+    <decorator name="web" page="layout.jsp">
+        <pattern>/*</pattern>
+    </decorator>
+
+    <decorator name="login" page="login.jsp">
+        <pattern>/login*</pattern>
+    </decorator>
+</decorators>

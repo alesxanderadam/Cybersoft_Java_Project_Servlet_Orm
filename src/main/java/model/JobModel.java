@@ -4,12 +4,9 @@ import dto.DateDto;
 
 import java.util.Date;
 
-public class TaskModel extends DateDto {
+public class JobModel extends DateDto {
     private int id;
-    private int user_id;
-    private int job_id;
     private String name;
-    private int status_id;
     private Date start_date;
     private Date end_date;
 
@@ -21,36 +18,12 @@ public class TaskModel extends DateDto {
         this.id = id;
     }
 
-    public int getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
-    }
-
-    public int getJob_id() {
-        return job_id;
-    }
-
-    public void setJob_id(int job_id) {
-        this.job_id = job_id;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getStatus_id() {
-        return status_id;
-    }
-
-    public void setStatus_id(int status_id) {
-        this.status_id = status_id;
     }
 
     public Date getStart_date() {
@@ -68,4 +41,5 @@ public class TaskModel extends DateDto {
     public void setEnd_date(Date end_date) {
         this.end_date = end_date;
     }
+
 }

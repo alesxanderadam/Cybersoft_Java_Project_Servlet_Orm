@@ -1,6 +1,8 @@
 package model;
 
-public class UserModel {
+import dto.UserDto;
+
+public class UserModel extends UserDto {
     private int id;
     private String email;
     private String password;

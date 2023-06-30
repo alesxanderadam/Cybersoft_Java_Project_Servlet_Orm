@@ -11,22 +11,58 @@ import java.util.List;
 public class RoleService {
     private RoleRepository roleRepository = new RoleRepository();
     private UserRepository userRepository = new UserRepository();
-    public List<RoleModel> showListRole(HttpServletRequest req, HttpServletResponse resp){
-        try{
-            List<RoleModel> rolesList =  userRepository.roles;
+
+    public List<RoleModel> showListRole(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            List<RoleModel> rolesList = userRepository.roles;
             req.setAttribute("roles", rolesList);
-            req.getRequestDispatcher("role-table.jsp").forward(req,resp);
-        }catch (Exception e){
-            System.out.println("Error showAllUser " + e);
+            req.getRequestDispatcher("/views/roles/role-table.jsp").forward(req, resp);
+        } catch (Exception e) {
+            System.out.println("Error showListRole " + e);
         }
         return userRepository.roles;
     }
-    public boolean addRole(String name, String description){
-        try {
 
-        }catch (Exception e){
-            System.out.println("Error addRole service " + e);
+    public void addRole(String name, String description) {
+        try {
+            boolean isSuccess = roleRepository.insertRole(name, description);
+            if (isSuccess) {
+                userRepository.roles = userRepository.findAllModels("roles", new String[]{"id", "name", "description"}, RoleModel.class);
+            }
+        } catch (Exception e) {
+            System.out.println("Error addRole " + e);
         }
-        return roleRepository.insertRole(name,description);
+    }
+
+    public boolean showDetailRole(int role_id, HttpServletResponse resp, HttpServletRequest req) {
+        RoleModel roleModel = roleRepository.getRoleById(role_id);
+        boolean isSuccess = false;
+        try {
+            if (roleModel != null) {
+                isSuccess = true;
+                req.setAttribute("roleDetailModel", roleModel);
+            }
+        } catch (Exception e) {
+            System.out.println("Error showDetailRole " + e);
+        }
+        return isSuccess;
+    }
+
+    public void updateRole(String role_id, RoleModel roleModel) {
+        try {
+            boolean isSuccess = roleRepository.updateRole(role_id, roleModel);
+            if (isSuccess) {
+                userRepository.roles = userRepository.findAllModels("roles", new String[]{"id", "name", "description"}, RoleModel.class);
+            }
+        } catch (Exception e) {
+            System.out.println("Error updateRole " + e);
+        }
+    }
+
+    public void deleteRoleSerivce(int role_id) {
+        boolean isSuccess = roleRepository.deleteRole(role_id);
+        if (isSuccess) {
+            userRepository.roles = userRepository.findAllModels("roles", new String[]{"id", "name", "description"}, RoleModel.class);
+        }
     }
 }

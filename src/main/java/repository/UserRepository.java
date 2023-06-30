@@ -47,6 +47,29 @@ public class UserRepository extends UtilsRepository {
 
     public List<UserModel> users = findAllModels("users", new String[]{"id", "email", "fullname", "role_id"}, UserModel.class);
 
+    public List<UserModel> getAllUserCustom(){
+        List<UserModel> listUser = new ArrayList<>();
+        try(Connection connection = MysqlConfig.getConnection()){
+            String sql = "SELECT users.id, users.email, users.fullname, users.role_id, roles.name as role_name FROM users INNER JOIN roles ON users.role_id = roles.id";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+            while(resultSet.next()){
+                UserModel userModel = new UserModel();
+
+                userModel.setId(resultSet.getInt("id"));
+                userModel.setEmail(resultSet.getString("email"));
+                userModel.setFullname(resultSet.getString("fullname"));
+                userModel.setRoleId(resultSet.getInt("role_id"));
+                userModel.setRole_name(resultSet.getString("role_name"));
+
+                listUser.add(userModel);
+            }
+        }catch (Exception error){
+            System.out.println("Error get all user custom " + error);
+        }
+        return listUser;
+    }
+
     public List<RoleModel> roles = findAllModels("roles", new String[]{"id", "name", "description"}, RoleModel.class);
 
     public UserModel getUserById(int user_id) {

@@ -19,11 +19,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png">
     <title>Pixel Admin - Responsive Admin Dashboard Template build with Twitter Bootstrap</title>
     <!-- Bootstrap Core CSS -->
-    <link  href=<c:url value="/bootstrap/dist/css/bootstrap.min.css" /> rel="stylesheet">
+    <link  href="<c:url value="/bootstrap/dist/css/bootstrap.min.css" />" rel="stylesheet">
     <!-- Menu CSS -->
-    <link href=<c:url value="/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" /> rel="stylesheet">
+    <link href="<c:url value="/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" />" rel="stylesheet">
     <!-- animation CSS -->
-    <link href=<c:url value="/css/animate.css"/> rel="stylesheet">
+    <link href="<c:url value="/css/animate.css"/>" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="<c:url value="/css/style.css" />" rel="stylesheet">
     <!-- color CSS you can use different color css from css/colors folder -->
@@ -86,12 +86,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                        aria-hidden="true"></i><span class="hide-menu">Thành viên</span></a>
                 </li>
                 <li>
-                    <a href="role-table.jsp" class="waves-effect"><i class="fa fa-modx fa-fw"
+                    <a href="<c:url value="/role" />" class="waves-effect"><i class="fa fa-modx fa-fw"
                                                                      aria-hidden="true"></i><span class="hide-menu">Quyền</span></a>
                 </li>
                 <li>
-                    <a href="groupwork.html" class="waves-effect"><i class="fa fa-table fa-fw"
-                                                                     aria-hidden="true"></i><span class="hide-menu">Công việc</span></a>
+                    <a href="/groupwork" class="waves-effect"><i class="fa fa-table fa-fw"
+                                                                               aria-hidden="true"></i><span class="hide-menu">Công việc</span></a>
                 </li>
                 <li>
                     <a href="blank.html" class="waves-effect"><i class="fa fa-columns fa-fw"
