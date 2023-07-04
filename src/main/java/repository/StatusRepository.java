@@ -1,7 +1,6 @@
 package repository;
 
-import model.StatusModel;
-import model.UserModel;
+import entity.StatusModel;
 
 import java.util.List;
 

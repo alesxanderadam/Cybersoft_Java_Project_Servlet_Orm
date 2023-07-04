@@ -28,7 +28,7 @@ public abstract class UtilsRepository {
                     // Lấy giá trị từ ResultSet dựa trên tên cột
                     Object value = resultSet.getObject(columnName);
 
-                    // Thiết lập giá trị cho thuộc tính trong model
+                    // Thiết lập giá trị cho thuộc tính trong entity
                     field.set(model, value);
                 }
 
@@ -47,6 +47,7 @@ public abstract class UtilsRepository {
         }
         return listModels;
     }
+
     public <T> T findModelsByIds(String tablename, String[] columnNames, String idColumnName, Object idValue, Class<T> modelClass){
         T model = null;
         try(Connection connection = MysqlConfig.getConnection()) {

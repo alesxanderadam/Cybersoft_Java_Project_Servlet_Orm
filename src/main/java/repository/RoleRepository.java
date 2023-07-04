@@ -1,9 +1,7 @@
 package repository;
 
 import config.MysqlConfig;
-import model.RoleModel;
-import model.TaskModel;
-import model.UserModel;
+import entity.RoleModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

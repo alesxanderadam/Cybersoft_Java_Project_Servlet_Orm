@@ -22,7 +22,7 @@
             <div class="col-md-2 col-12"></div>
             <div class="col-md-8 col-xs-12">
                 <div class="white-box">
-                    <form action="<c:url value="/user/add" />" class="form-horizontal form-material" method="post">
+                    <form action="<c:url value="/user/add" />" enctype='multipart/form-data' class="form-horizontal form-material" method="post">
                         <div class="form-group">
                             <label class="col-md-12">Full Name</label>
                             <div class="col-md-12">
@@ -52,6 +52,9 @@
                                     </c:forEach>
                                 </select>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="file" name="imageFile"/>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-12">

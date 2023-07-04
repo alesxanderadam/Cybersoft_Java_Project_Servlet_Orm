@@ -1,7 +1,5 @@
 package dto;
 
-import model.UserModel;
-
 public class UserDto {
     private String role_name;
 

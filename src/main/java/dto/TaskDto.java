@@ -1,6 +1,6 @@
 package dto;
 
-import model.TaskModel;
+import entity.TaskModel;
 
 public class TaskDto extends TaskModel {
     private String job_name;

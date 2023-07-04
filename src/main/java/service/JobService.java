@@ -1,7 +1,6 @@
 package service;
 
-import model.JobModel;
-import model.UserModel;
+import entity.JobModel;
 import repository.JobRepository;
 
 import javax.servlet.ServletException;
@@ -16,6 +15,7 @@ public class JobService {
     private final JobRepository jobRepository = new JobRepository();
 
     public void showAllJob(HttpServletRequest req, HttpServletResponse resp){
+        jobRepository.jobLists = jobRepository.findAllModels("jobs", new String[]{"id","name","start_date","end_date"}, JobModel.class);
         List<JobModel> jobModelList = jobRepository.jobLists;
         try{
             if (jobModelList.size() > 0) {

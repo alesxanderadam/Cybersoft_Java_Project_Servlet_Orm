@@ -25,6 +25,9 @@
 <script src="<c:url value="/js/custom.min.js" /> "></script>
 <script src="<c:url value="/js/dashboard1.js" /> "></script>
 <script src="<c:url value="/plugins/bower_components/toast-master/js/jquery.toast.js" /> "></script>
+<script src="<c:url value="/js/sweetalert.min.js"  />"></script>
 <script src="<c:url value="/js/user-table.js"  />"></script>
 <script src="<c:url value="/js/role.js"  />"></script>
 <script src="<c:url value="/js/job.js"  />"></script>
+<script src="<c:url value="/js/task.js"  />"></script>
+<script src="<c:url value="/js/update-status_user.js"  />"></script>

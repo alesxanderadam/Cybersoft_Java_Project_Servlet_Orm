@@ -9,9 +9,9 @@
 </head>
 <body>
 <!-- Preloader -->
-<div class="preloader">
-    <div class="cssload-speeding-wheel"></div>
-</div>
+<%--<div class="preloader">--%>
+<%--    <div class="cssload-speeding-wheel"></div>--%>
+<%--</div>--%>
 
 <div id="wrapper">
     <jsp:include page="/common/user-management/header.jsp"/>

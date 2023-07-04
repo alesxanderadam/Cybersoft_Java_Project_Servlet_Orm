@@ -1,7 +1,6 @@
 package controller;
 
-import model.JobModel;
-import model.TaskModel;
+import entity.TaskModel;
 import service.JobService;
 import service.TaskService;
 import service.UserService;
@@ -56,6 +55,9 @@ public class TaskController extends HttpServlet {
             case "/task/update":
                 updateTask(req, resp);
                 break;
+            case "/task/delete":
+                deleteTask(req, resp);
+                break;
             default:
                 break;
         }
@@ -88,7 +90,7 @@ public class TaskController extends HttpServlet {
             System.out.println("Error date " + e);
             e.printStackTrace();
         }
-        req.getRequestDispatcher("/tasks").forward(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/task");
     }
 
     private void findDetailTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -136,6 +138,14 @@ public class TaskController extends HttpServlet {
             System.out.println("Error date " + e);
             e.printStackTrace();
         }
-        req.getRequestDispatcher("/task").forward(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/task");
+    }
+    private void deleteTask(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        int task_id = Integer.parseInt(req.getParameter("task_id"));
+        boolean isSuccess = taskService.deleteTask(task_id);
+        if (isSuccess) {
+            System.out.println("Delete success");
+        }
+        resp.sendRedirect(req.getContextPath() + "/user");
     }
 }

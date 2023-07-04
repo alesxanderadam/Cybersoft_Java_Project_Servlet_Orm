@@ -41,11 +41,20 @@
                                     <td><c:out value="${user.getId()}"/></td>
                                     <td><c:out value="${user.getFullname()}"/></td>
                                     <td><c:out value="${user.getEmail()}"/></td>
-                                    <td><c:out value="${user.getRole_name()}" /></td>
-                                    <td><c:out value="${user.getAvatar()}"/></td>
+                                    <td><c:out value="${user.getRole_name()}"/></td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${not empty user.getAvatar()}">
+                                                <img src="<c:out value="${appRootDir}plugins/images/users/${user.getAvatar()}" />" class="img-circle" width="50" height="50" alt="avatar_user">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
                                     <td>
                                         <a href="<c:url value='/user/update?user_id=${user.getId()}' />" class="btn btn-sm btn-primary">Sửa</a>
-                                        <a href="<c:url value='/user/delete?user_id=${user.getId()}' />" class="btn btn-sm btn-danger btn-deleteUser" userId="${user.getId()}">Xóa</a>
+                                        <a href="#" class="btn btn-sm btn-danger btn-deleteUser" fileName="${user.getAvatar()}" userId="${user.getId()}">Xóa</a>
                                         <a href="<c:url value='/user/details?user_id=${user.getId()}' />" class="btn btn-sm btn-info">Xem</a>
                                     </td>
                                 </tr>

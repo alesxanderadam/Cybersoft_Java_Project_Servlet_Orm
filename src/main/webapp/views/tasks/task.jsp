@@ -52,7 +52,7 @@
                                     <td>
                                         <a href="<c:url value="/task/update?task_id=${task.getId()}" /> "
                                            class="btn btn-sm btn-primary">Sửa</a>
-                                        <a href="#" class="btn btn-sm btn-danger">Xóa</a>
+                                        <a href="#" class="btn btn-sm btn-danger btn-deleteTask" taskId="${task.getId()}">Xóa</a>
                                         <a href="#" class="btn btn-sm btn-info">Xem</a>
                                     </td>
                                 </tr>

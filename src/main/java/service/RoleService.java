@@ -1,6 +1,6 @@
 package service;
 
-import model.RoleModel;
+import entity.RoleModel;
 import repository.RoleRepository;
 import repository.UserRepository;
 

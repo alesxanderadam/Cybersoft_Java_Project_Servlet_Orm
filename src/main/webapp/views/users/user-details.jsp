@@ -22,17 +22,16 @@
         <div class="row">
             <div class="col-md-4 col-xs-12">
                 <div class="white-box">
-                    <div class="user-bg"><img width="100%" alt="user" src="${userDetailModel.getAvatar()}">
+                    <div class="user-bg"><img width="100%" alt="user" src="<c:out value="../${appRootDir}plugins/images/users/${userDetailModel.getAvatar()}" />">
                         <div class="overlay-box">
                             <div class="user-content">
-                                <a href="javascript:void(0)"><img src="${userDetailModel.getAvatar()}"
+                                <a href="javascript:void(0)"><img src="<c:out value="../${appRootDir}plugins/images/users/${userDetailModel.getAvatar()}" />"
                                                                   class="thumb-lg img-circle" alt="img"></a>
                                 <h4 class="text-white"><c:out value="${userDetailModel.getFullname()}"/></h4>
                                 <h5 class="text-white">${userDetailModel.getEmail()}</h5>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div class="col-md-8 col-xs-12">

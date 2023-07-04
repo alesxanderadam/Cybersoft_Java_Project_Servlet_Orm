@@ -1,6 +1,6 @@
 package service;
 
-import model.UserModel;
+import entity.UserModel;
 import repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;

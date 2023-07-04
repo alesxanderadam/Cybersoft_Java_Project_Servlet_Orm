@@ -1,9 +1,9 @@
 package service;
 
-import model.RoleModel;
-import model.StatusModel;
-import model.TaskModel;
-import model.UserModel;
+import entity.RoleModel;
+import entity.StatusModel;
+import entity.TaskModel;
+import entity.UserModel;
 import repository.StatusRepository;
 import repository.TaskRepository;
 import repository.UserRepository;
@@ -69,23 +69,29 @@ public class UserService {
     }
     }
 
-    public void userAdd(String fullname, String email, String password, String role_id) {
-        boolean isSuccess = userRepository.insertUser(fullname, email, password, role_id);
+    public void userAdd(String fullname, String email, String password, String avatar, String role_id) {
+        boolean isSuccess = userRepository.insertUser(fullname, email, password, avatar, role_id);
         if (isSuccess) {
-            userRepository.users = userRepository.findAllModels("users", new String[]{"id", "email", "fullname", "role_id"}, UserModel.class);
+            userRepository.users = userRepository.findAllModels("users", new String[]{"id", "email", "fullname","avatar", "role_id"}, UserModel.class);
         }
     }
 
     public void userUpdate(Object user_id, UserModel userModel){
         userRepository.updateUser(user_id,userModel);
-        userRepository.users = userRepository.findAllModels("users", new String[]{"id", "email", "fullname", "role_id"}, UserModel.class);
+        userRepository.users = userRepository.findAllModels("users", new String[]{"id", "email", "fullname", "avatar", "role_id"}, UserModel.class);
     }
 
     public boolean deleteUser(int user_id){
         boolean isSuccess = userRepository.deleteByUserId(user_id);
         if (isSuccess) {
-            userRepository.users = userRepository.findAllModels("users", new String[]{"id", "email", "fullname", "role_id"}, UserModel.class);
+            userRepository.users = userRepository.findAllModels("users", new String[]{"id", "email", "fullname","avatar", "role_id"}, UserModel.class);
         }
         return isSuccess;
+    }
+
+    public boolean userUpdateStatusTask(int status_id, int task_id, int user_id){
+        boolean isSuccess = taskRepository.updateStatusTask(status_id, task_id, user_id);
+        taskRepository.tasks = taskRepository.findAllModels("tasks", new String[]{"id", "name", "start_date", "end_date", "user_id", "job_id", "status_id"}, TaskModel.class);
+    return isSuccess;
     }
 }

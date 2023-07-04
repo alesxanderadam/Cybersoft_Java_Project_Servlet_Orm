@@ -1,7 +1,6 @@
 package controller;
 
-import model.JobModel;
-import model.UserModel;
+import entity.JobModel;
 import service.JobService;
 
 import javax.servlet.ServletException;

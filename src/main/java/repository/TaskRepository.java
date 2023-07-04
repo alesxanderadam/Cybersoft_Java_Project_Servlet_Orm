@@ -2,8 +2,7 @@ package repository;
 
 import config.MysqlConfig;
 import dto.TaskDto;
-import model.TaskModel;
-import model.UserModel;
+import entity.TaskModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,7 +16,7 @@ public class TaskRepository extends UtilsRepository {
         Connection connection = null;
         ArrayList<TaskModel> taskModelArrayList = new ArrayList<>();
         try {
-            String sql = "select tasks.id, tasks.user_id, tasks.name, status.id as status_id, tasks.start_date, tasks.end_date from tasks inner join users on tasks.user_id = users.id inner join status on tasks.status_id = status.id where users.id = ?";
+            String sql = "select tasks.id, tasks.user_id, tasks.name, jobs.name as job_name, status.id as status_id, tasks.start_date, tasks.end_date from tasks inner join users on tasks.user_id = users.id inner join status on tasks.status_id = status.id inner join jobs on tasks.job_id = jobs.id where users.id = ?";
             PreparedStatement statement = MysqlConfig.getConnection().prepareStatement(sql);
             statement.setInt(1, user_id);
             ResultSet resultSet = statement.executeQuery();
@@ -28,6 +27,7 @@ public class TaskRepository extends UtilsRepository {
                 taskModel.setId(resultSet.getInt("id"));
                 taskModel.setUser_id(resultSet.getInt("user_id"));
                 taskModel.setName(resultSet.getString("name"));
+                taskModel.setJob_name(resultSet.getString("job_name"));
                 taskModel.setStatus_id(resultSet.getInt("status_id"));
                 taskModel.setStart_date(resultSet.getDate("start_date"));
                 taskModel.setEnd_date(resultSet.getDate("end_date"));
@@ -99,11 +99,31 @@ public class TaskRepository extends UtilsRepository {
         return findModelsByIds("tasks", columnNames, idColumnName, task_id, TaskModel.class);
     }
 
-    public boolean updateTask(Object task_id,TaskModel model){
+    public void updateTask(Object task_id, TaskModel model){
         String[] columnNames = {"name", "start_date", "end_date", "user_id", "job_id", "status_id"};
         String idColumnName = "id";
 
-        return updateModelsById("tasks",columnNames,idColumnName,task_id,model);
+        updateModelsById("tasks", columnNames, idColumnName, task_id, model);
     }
 
+    public boolean updateStatusTask(int status_id, int task_id, int user_id){
+        boolean isSuccess = false;
+        try(Connection connection = MysqlConfig.getConnection()) {
+            String sql = "update tasks set status_id = ? where id = ? and user_id = ?;";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, status_id);
+            statement.setInt(2, task_id);
+            statement.setInt(3, user_id);
+            int rowsAffected = statement.executeUpdate();
+            isSuccess = rowsAffected > 0;
+        }catch (Exception e){
+            System.out.println("Error getTaskByUserId : " + e.getMessage());
+        }
+        return isSuccess;
+    }
+
+    public boolean deleteTaskById(int task_id){
+        String sql = "DELETE FROM tasks t WHERE t.id = ?";
+        return deleteById(task_id, "tasks",sql);
+    }
 }

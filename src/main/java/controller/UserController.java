@@ -1,6 +1,6 @@
 package controller;
 
-import model.UserModel;
+import entity.UserModel;
 import service.UserService;
 
 import javax.servlet.ServletException;
@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @WebServlet(name = "userController", urlPatterns = {"/user", "/user/add", "/user/update", "/user/details", "/user/delete"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
@@ -62,13 +64,28 @@ public class UserController extends HttpServlet {
         }
     }
 
-    private void deleteUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void deleteUser(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         int user_id = Integer.parseInt(req.getParameter("user_id"));
-        boolean isSuccess = userService.deleteUser(user_id);
-        if (isSuccess) {
-            System.out.println("Delete success");
+        String fileName = req.getParameter("imageFile");
+        if (fileName != null) {
+            String appRootDir = getServletContext().getRealPath("/");
+            String uploadDir = appRootDir + "plugins/images/users";
+            String absoluteUploadDir = new File(uploadDir).getAbsolutePath();
+            String filePath = absoluteUploadDir + File.separator + fileName;
+            File file = new File(filePath);
+            if (file.exists()) {
+                boolean deleteResult = file.delete();
+                if(deleteResult) {
+                    System.out.println("Xoa anh thanh cong " + file);
+                } else {
+                    System.out.println("Xoa anh that bai " + file);
+                }
+            }
         }
+        userService.deleteUser(user_id);
+        resp.sendRedirect(req.getContextPath() + "/user");
     }
+
 
     private void findAllUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         userService.showAllUser(req, resp);
@@ -89,7 +106,6 @@ public class UserController extends HttpServlet {
 
         if (!isHaveUser) {
             req.getRequestDispatcher("/notfound").forward(req, resp);
-
             return;
         }
 
@@ -101,33 +117,39 @@ public class UserController extends HttpServlet {
         String method = req.getMethod();
         if (method.equalsIgnoreCase("post")) {
             UserModel userModel = new UserModel();
-            Part imagePart = req.getPart("imageFile");
-            if (imagePart != null && imagePart.getSize() > 0) {
-                // Lưu tệp hình ảnh vào thư mục lưu trữ
-                String uploadDir = "/admin_pixel/plugins/images/users";
-                String fileName = imagePart.getSubmittedFileName();
-                imagePart.write(uploadDir + File.separator + fileName);
-
-                // Thực hiện các xử lý khác liên quan đến tệp hình ảnh nếu cần
-                // Ví dụ: lưu đường dẫn tệp hình ảnh vào cơ sở dữ liệu
-            }
             String user_id = req.getParameter("user_id");
             String fullname = req.getParameter("fullname");
             String email = req.getParameter("email");
             String password = req.getParameter("password");
             String role_id = req.getParameter("role_id");
+            Part imagePart = req.getPart("imageFile");
+            if (imagePart != null && imagePart.getSize() > 0) {
+                String appRootDir = getServletContext().getRealPath("/");
+                String uploadDir = appRootDir + "plugins/images/users";
+                String absoluteUploadDir = new File(uploadDir).getAbsolutePath();
+                String fileName = imagePart.getSubmittedFileName();
+                Date currentDate = new Date();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
+                String formattedDate = dateFormat.format(currentDate);
+
+                String newFileName = formattedDate + "_" + fileName;
+                String filePath = absoluteUploadDir + File.separator + newFileName;
+                imagePart.write(filePath);
+                userModel.setAvatar(newFileName);
+            }
             userModel.setFullname(fullname);
             userModel.setEmail(email);
             userModel.setPassword(password);
             userModel.setRoleId(Integer.parseInt(role_id));
             userService.userUpdate(user_id, userModel);
             req.getRequestDispatcher("/user").forward(req, resp);
+            resp.sendRedirect(req.getContextPath() + "/user");
         }
     }
 
     private void showAddUserPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         userService.showListRole(req, resp);
-        req.getRequestDispatcher("admin_pixel/views/users/user-add.jsp").forward(req, resp);
+        req.getRequestDispatcher("/views/users/user-add.jsp").forward(req, resp);
     }
 
     private void addUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -137,17 +159,32 @@ public class UserController extends HttpServlet {
             String email = req.getParameter("email");
             String password = req.getParameter("password");
             String role_id = req.getParameter("role_id");
-            userService.userAdd(fullname, email, password, role_id);
+            Part imagePart = req.getPart("imageFile");
+            if (imagePart != null && imagePart.getSize() > 0) {
+                String appRootDir = getServletContext().getRealPath("/");
+                String uploadDir = appRootDir + "plugins/images/users";
+                String absoluteUploadDir = new File(uploadDir).getAbsolutePath();
+                String fileName = imagePart.getSubmittedFileName();
+                Date currentDate = new Date();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
+                String formattedDate = dateFormat.format(currentDate);
+
+                String newFileName = formattedDate + "_" + fileName;
+                String filePath = absoluteUploadDir + File.separator + newFileName;
+                imagePart.write(filePath);
+                userService.userAdd(fullname, email, password, newFileName, role_id);
+            }else {
+                userService.userAdd(fullname, email, password, null, role_id);
+            }
         }
-        req.getRequestDispatcher("/views/users/user-add.jsp").forward(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/user");
     }
 
     private void findAllTaskAndUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String user_idParam = req.getParameter("user_id");
 
         if (user_idParam == null || user_idParam.isEmpty()) {
-            req.getRequestDispatcher("/notfound").forward(req, resp);
-
+            resp.sendRedirect(req.getContextPath() + "/notfound");
             return;
         }
 
@@ -160,8 +197,7 @@ public class UserController extends HttpServlet {
             userService.showDetailTaskByUserId(user_id, req, resp);
             req.getRequestDispatcher("/views/users/user-details.jsp").forward(req, resp);
         } else {
-            req.getRequestDispatcher("/notfound").forward(req, resp);
-
+            resp.sendRedirect(req.getContextPath() + "/notfound");
         }
     }
 }

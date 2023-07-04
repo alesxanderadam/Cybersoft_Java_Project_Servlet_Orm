@@ -1,7 +1,8 @@
 package service;
 
 import dto.TaskDto;
-import model.TaskModel;
+import entity.TaskModel;
+import entity.UserModel;
 import repository.TaskRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -61,4 +62,11 @@ public class TaskService {
         taskRepository.tasks = taskRepository.findAllModels("tasks", new String[]{"id", "name", "start_date", "end_date", "user_id", "job_id", "status_id"}, TaskModel.class);
     }
 
+    public boolean deleteTask(int task_id){
+        boolean isSuccess = taskRepository.deleteTaskById(task_id);
+        if (isSuccess) {
+            taskRepository.tasks = taskRepository.findAllModels("tasks", new String[]{"id", "name", "start_date", "end_date", "user_id", "job_id", "status_id"}, TaskModel.class);
+        }
+        return isSuccess;
+    }
 }

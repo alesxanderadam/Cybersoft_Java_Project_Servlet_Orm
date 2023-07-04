@@ -1,7 +1,7 @@
 package repository;
 
 import config.MysqlConfig;
-import model.JobModel;
+import entity.JobModel;
 
 import java.sql.Connection;
 import java.sql.Date;

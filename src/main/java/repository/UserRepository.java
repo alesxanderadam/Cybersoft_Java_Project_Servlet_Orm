@@ -1,8 +1,8 @@
 package repository;
 
 import config.MysqlConfig;
-import model.RoleModel;
-import model.UserModel;
+import entity.RoleModel;
+import entity.UserModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -45,12 +45,12 @@ public class UserRepository extends UtilsRepository {
         return userModelList;
     }
 
-    public List<UserModel> users = findAllModels("users", new String[]{"id", "email", "fullname", "role_id"}, UserModel.class);
+    public List<UserModel> users = findAllModels("users", new String[]{"id", "email", "fullname", "avatar", "role_id"}, UserModel.class);
 
     public List<UserModel> getAllUserCustom(){
         List<UserModel> listUser = new ArrayList<>();
         try(Connection connection = MysqlConfig.getConnection()){
-            String sql = "SELECT users.id, users.email, users.fullname, users.role_id, roles.name as role_name FROM users INNER JOIN roles ON users.role_id = roles.id";
+            String sql = "SELECT users.id, users.email, users.fullname, users.avatar, users.role_id, roles.name as role_name FROM users INNER JOIN roles ON users.role_id = roles.id";
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery();
             while(resultSet.next()){
@@ -59,6 +59,7 @@ public class UserRepository extends UtilsRepository {
                 userModel.setId(resultSet.getInt("id"));
                 userModel.setEmail(resultSet.getString("email"));
                 userModel.setFullname(resultSet.getString("fullname"));
+                userModel.setAvatar(resultSet.getString("avatar"));
                 userModel.setRoleId(resultSet.getInt("role_id"));
                 userModel.setRole_name(resultSet.getString("role_name"));
 
@@ -79,17 +80,18 @@ public class UserRepository extends UtilsRepository {
         return findModelsByIds("users", columnNames, idColumnName, user_id, UserModel.class);
     }
 
-    public boolean insertUser(String fullname, String email, String password, String role_id ){
+    public boolean insertUser(String fullname, String email, String password, String avatar, String role_id ){
         Connection connection = null;
         boolean isSuccess = false;
         try {
             connection = MysqlConfig.getConnection();
-            String sql = "INSERT INTO users( email, fullname, password, role_id) VALUES (?,?,?,?)";
+            String sql = "INSERT INTO users( email, fullname, password, avatar, role_id) VALUES (?,?,?,?,?)";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1,email);
             statement.setString(2,fullname);
             statement.setString(3,password);
-            statement.setInt(4,Integer.parseInt(role_id));
+            statement.setString(4,avatar);
+            statement.setInt(5,Integer.parseInt(role_id));
 
             isSuccess = statement.executeUpdate() > 0;
         }catch (Exception e){
@@ -107,11 +109,12 @@ public class UserRepository extends UtilsRepository {
     }
 
     public boolean updateUser(Object user_id,UserModel model){
-        String[] columnNames = {"email","password","fullname","role_id"};
+        String[] columnNames = {"email","password","fullname","avatar","role_id"};
         String idColumnName = "id";
 
         return updateModelsById("users",columnNames,idColumnName,user_id,model);
     }
+
 
     public boolean deleteByUserId(int user_id){
         String sql = "DELETE FROM users u WHERE u.id = ?";

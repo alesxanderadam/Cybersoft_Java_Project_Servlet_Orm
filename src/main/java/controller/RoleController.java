@@ -1,7 +1,6 @@
 package controller;
 
-import model.RoleModel;
-import model.TaskModel;
+import entity.RoleModel;
 import service.RoleService;
 
 import javax.servlet.ServletException;
@@ -23,7 +22,7 @@ public class RoleController extends HttpServlet {
                 roleService.showListRole(req, resp);
                 break;
             case "/role/add":
-                addRoleController(req, resp);
+                req.getRequestDispatcher("/views/roles/role-add.jsp").forward(req, resp);
                 break;
             case "/role/update":
                 int role_id = Integer.parseInt(req.getParameter("role_id"));
@@ -65,18 +64,15 @@ public class RoleController extends HttpServlet {
     }
 
     public void addRoleController(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String method = req.getMethod();
-        if (method.equalsIgnoreCase("post")) {
             String role_name = req.getParameter("role_name");
             String desc = req.getParameter("description");
             roleService.addRole(role_name, desc);
-        }
-        req.getRequestDispatcher("/views/roles/role-add.jsp").forward(req, resp);
+            resp.sendRedirect(req.getContextPath() + "/role");
     }
 
     public void deleteRoleController(int role_id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         roleService.deleteRoleSerivce(role_id);
-        req.getRequestDispatcher("/views/roles/role-table.jsp").forward(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/role");
     }
 
     public void updateRoleController(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -87,6 +83,7 @@ public class RoleController extends HttpServlet {
         roleModel.setName(role_name);
         roleModel.setDescription(desc);
         roleService.updateRole(role_id ,roleModel);
-        req.getRequestDispatcher("/views/roles/role-add.jsp").forward(req, resp);
+        req.getRequestDispatcher("/role").forward(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/role");
     }
 }

@@ -2,7 +2,13 @@
 <decorators defaultdir="/decorators">
     <!--    Khai bao ko su dung giao dien -->
     <excludes>
-        <pattern>/views/not-found/404-NotFound.jsp</pattern>
+        <pattern>/views/error-page/404-NotFound.jsp</pattern>
+    </excludes>
+    <excludes>
+        <pattern>/views/error-page/401-NotFound.jsp</pattern>
+    </excludes>
+    <excludes>
+        <pattern>/auth/signIn*</pattern>
     </excludes>
 
 <!--    <excludes>-->
