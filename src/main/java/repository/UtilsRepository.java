@@ -47,7 +47,6 @@ public abstract class UtilsRepository {
         }
         return listModels;
     }
-
     public <T> T findModelsByIds(String tablename, String[] columnNames, String idColumnName, Object idValue, Class<T> modelClass){
         T model = null;
         try(Connection connection = MysqlConfig.getConnection()) {
